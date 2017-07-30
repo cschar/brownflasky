@@ -3,7 +3,7 @@
 #----------------------------------------------------------------------------#
 
 from flask import Flask, render_template, request
-# from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 import logging
 from logging import Formatter, FileHandler
 from forms import *
@@ -15,7 +15,7 @@ import os
 
 app = Flask(__name__)
 app.config.from_object('config')
-#db = SQLAlchemy(app)
+db = SQLAlchemy(app)
 
 # Automatically tear down SQLAlchemy.
 '''
@@ -40,10 +40,32 @@ def login_required(test):
 # Controllers.
 #----------------------------------------------------------------------------#
 
+import nltk
+from nltk.corpus import brown
 
 @app.route('/')
 def home():
+
     return render_template('pages/placeholder.home.html')
+
+
+
+@app.route('/words')
+def words():
+
+    categories = brown.categories()
+    return render_template('pages/words.html',
+                            categories=categories)
+
+
+@app.route('/words/<category>')
+def word_category(category='lore'):
+
+    words = brown.words(categories=category)
+
+    return render_template('pages/word_category.html', category=category,
+                           words=words[0:100])
+
 
 
 @app.route('/about')

@@ -1,0 +1,21 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <h1>Brown flasky</h1>
+</div>
+<p class="lead"> brown categories  <span> <img src="/static/ico/favicon-animated-kraken.ico"> </span></p>
+  <ul>
+      {% for cat in categories %}
+
+    <li> <a href="{{ url_for('word_category', category=cat) }}">{{ cat }}</a> </li>
+    {% endfor %}
+  </ul>
+
+  </div>
+
+  <div>
+  {{  words }}
+  </div>
+{% endblock %}
