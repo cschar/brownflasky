@@ -1,6 +1,6 @@
 ## brown flasky
 
- nltk brown corpus word experiments
+ nltk brown,shakespeare etc... corpus word experiments
 
 
 
@@ -11,7 +11,7 @@
     source activate brownflasky
     pip install requirements.txt
     conda install --file requirements-conda.txt
-    
+        
     python app.py
 
 ## Source

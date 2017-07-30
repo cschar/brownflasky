@@ -1,0 +1,16 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <h1>Shakespeare plays</h1>
+</div>
+  <ul>
+      {% for play in plays %}
+      <li> <a href="{{ url_for('speare_play', play_id=play.id) }}">{{ play.name }}</a> </li>
+      {% endfor %}
+  </ul>
+
+  </div>
+
+{% endblock %}

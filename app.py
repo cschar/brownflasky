@@ -9,6 +9,13 @@ from logging import Formatter, FileHandler
 from forms import *
 import os
 
+
+import nltk
+from xml.etree import ElementTree
+nltk.download('shakespeare')
+nltk.download('brown')
+from nltk.corpus import brown, shakespeare
+
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -40,8 +47,6 @@ def login_required(test):
 # Controllers.
 #----------------------------------------------------------------------------#
 
-import nltk
-from nltk.corpus import brown
 
 @app.route('/')
 def home():
@@ -57,7 +62,6 @@ def words():
     return render_template('pages/words.html',
                             categories=categories)
 
-
 @app.route('/words/<category>')
 def word_category(category='lore'):
 
@@ -66,7 +70,38 @@ def word_category(category='lore'):
     return render_template('pages/word_category.html', category=category,
                            words=words[0:100])
 
+@app.route('/speare')
+def speare():
 
+    plays = []
+    for idx,play_name in enumerate(shakespeare.fileids()):
+        play = shakespeare.xml(play_name)
+        plays.append( {'name': play[0].text,
+                       'id': idx})
+
+    return render_template('pages/speare.html',
+                            plays=plays)
+
+@app.route('/speare/<play_id>')
+def speare_play(play_id):
+    ##http://www.nltk.org/howto/corpus.html
+
+    plays = shakespeare.fileids()
+    play = shakespeare.xml(plays[int(play_id)])
+
+    act_elems = []
+    for p in play.findall('ACT'):
+        element_text = p.itertext()
+        element_text = list(element_text)
+        act_elems.append((p.tag, element_text))
+
+    personae = [persona.text for persona in
+            play.findall('PERSONAE/PERSONA')]
+
+    return render_template('pages/speare_play.html',
+                           title=play[0].text,
+                           personae=personae,
+                           act_elems=act_elems)
 
 @app.route('/about')
 def about():
