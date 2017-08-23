@@ -1,4 +1,5 @@
-import records
+import sys
+
 import dataset
 import nltk
 from nltk import word_tokenize
@@ -6,20 +7,17 @@ from nltk.util import ngrams
 import time
 from collections import defaultdict
 
-from xml.etree import ElementTree
 # nltk.download('shakespeare')
 # nltk.download('brown')
+# nltk.download('punkt')
 
 from config import DATABASE_URI
 
-# db = records.Database(DATABASE_URI)
 db = dataset.connect(DATABASE_URI)
 
-table_name = 'lines_nose'
 #create_table = '''CREATE TABLE {} (text TEXT);'''.format(table_name)
 #truncate_table = ''' DELETE FROM lines '''
 
-#db.query(create_table)
 
 
 def insert_brown_phrases():
@@ -32,7 +30,9 @@ def insert_brown_phrases():
     # words have ',' separating each phrase
     import string
     sentence = []
-    for w in words[2000:10000]:
+    for idx, w in enumerate(words[2000:10000]):
+        if idx % 1000 == 0:
+            print('processed {} words'.format(idx))
         if w[0] not in string.ascii_letters:
             sentence = ' '.join(sentence)
             brown_table.insert({'chunk': sentence})
@@ -44,7 +44,7 @@ def insert_brown_phrases():
 
 
 def insert_shakespeare_lines():
-    table = db[table_name] # will create table
+    table = db['speare_lines'] # will create table
     from nltk.corpus import shakespeare
     plays = [ shakespeare.xml(i) for i in shakespeare.fileids()]
     start_time = time.time()
@@ -132,20 +132,26 @@ def get_db_quadgrams(amount=None):
         qd[quad['one']].append([quad['one'], quad['two'], quad['three'], quad['four']])
     return qd
 
-if __name__ == '__main__':
-    # lines = get_lines_from_play(amount=1000)
-    # qd = get_word_quadgram_from_lines(lines)
-    # print('generated quads: {}'.format(len(qd.keys())))
-    #
-    # set_db_quadgrams(qd)
 
-    qd2 = get_db_quadgrams()
-    print('fetched quads: {}'.format(len(qd2.keys())))
-    print(qd2['old'])
-    # for idx, i in enumerate(qd2.keys()):
-    #     print(i)
-    #     if idx > 50:
-    #         break
+if __name__ == '__main__':
+    if sys.argv[1] == 'setup':
+        nltk.download('shakespeare')
+        nltk.download('brown')
+        nltk.download('punkt')
+
+    if sys.argv[1] == 'gen-brown':
+        insert_brown_phrases()
+
+    if sys.argv[1] == 'gen-speare':
+        lines = get_lines_from_play(amount=1000)
+        qd = get_word_quadgram_from_lines(lines)
+        print('generated quads: {}'.format(len(qd.keys())))
+
+        set_db_quadgrams(qd)
+
+    if sys.argv[1] == 'stat':
+        qd2 = get_db_quadgrams()
+        print('fetched quads: {}'.format(len(qd2.keys())))
     pass
 
 
