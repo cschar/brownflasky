@@ -9,6 +9,11 @@
     source activate brownflasky
     pip install -r requirements.txt
     conda install --file requirements-conda.txt
+    
+    python generate_data.py setup
+    python generate_data.py gen-brown
+    python generate_data.py gen-speare
+    python generate_data.py stat
         
     python app.py
 
@@ -16,7 +21,7 @@
 ## ideas
 
 
-- [ ] build up tri-gram collection of shakespeare. 
+- [ x ] build up tri-gram collection of shakespeare. 
       combine them into sentences ending in a noun
       http://www.nltk.org/howto/wordnet.html
       https://stackoverflow.com/questions/17531684/n-grams-in-python-four-five-six-grams
