@@ -64,13 +64,14 @@ def words():
 from flask import jsonify
 
 import generate_data as gd
-import pickle
-try:
-    qd = pickle.load(open( "save.p", "rb" ))
-except:
-    all_lines = gd.get_lines_from_play()
-    qd = gd.get_word_quadgram_from_lines(all_lines)
-    pickle.dump(qd, open( "save.p", "wb" ))
+#import pickle
+# try:
+#     qd = pickle.load(open( "save.p", "rb" ))
+# except:
+#     all_lines = gd.get_lines_from_play()
+#     qd = gd.get_word_quadgram_from_lines(all_lines)
+#     pickle.dump(qd, open( "save.p", "wb" ))
+qd = gd.get_db_quadgrams()
 
 @app.route('/speare/api/<word>')
 def speare_word_api(word):
@@ -84,10 +85,15 @@ def speare_word_api(word):
     d = {'word': word, 'phrases': phrases}
     return jsonify(d)
 
+words_available = []
+for idx, i in enumerate(qd.keys()):
+        words_available.append(i)
+        if idx > 500:
+            break
+best_words = [] # figure out offline
+
 @app.route('/speare')
 def speare():
-    words_available = len(qd.keys())
-    best_words = [] # figure out offline
     return render_template('pages/speare.html',
                             best_words=best_words,
                             words_available=words_available)

@@ -1,7 +1,11 @@
 import records
 import dataset
 import nltk
+from nltk import word_tokenize
+from nltk.util import ngrams
 import time
+from collections import defaultdict
+
 from xml.etree import ElementTree
 # nltk.download('shakespeare')
 # nltk.download('brown')
@@ -58,48 +62,90 @@ def insert_shakespeare_lines():
     print('took{}'.format((time.time() - start_time)))
 
 
-def get_lines_from_play():
+def get_lines_from_play(amount=None):
     # table = db['quadgrams']
     from nltk.corpus import shakespeare
     plays = [ shakespeare.xml(i) for i in shakespeare.fileids()]
-    start_time = time.time()
-    print(start_time)
     all_lines = []
     for p in plays[0:2]:
         lines = p.findall('*/*/*/LINE')
         for l in lines:
+            if amount and amount <= len(all_lines):
+                return all_lines
+            if len(all_lines) % 100 == 0:
+                print("processed {} lines".format(len(all_lines)))
             all_lines.append(l.text)
     return all_lines
 
 def get_word_quadgram_from_lines(lines):
-    import nltk
-    from nltk import word_tokenize
-    from nltk.util import ngrams
     fails = []
     s = ''
-    from collections import defaultdict
     quad_dict = defaultdict(list)
+    # store 5 quadgrams per key
+    QUADGRAMS_PER_KEY = 5
     for line in lines:
         try:
             token=nltk.word_tokenize(line)
             quadgrams = ngrams(token,4)
             for quad in quadgrams:
+                if len(quad_dict[quad[0].lower()]) > QUADGRAMS_PER_KEY:
+                    continue
                 quad_dict[quad[0].lower()].append(quad)
         except:
             fails.append(line)
 
-    print("failed {} lines".format(len(fails)))
-    if len(fails) > 5:
-        print(fails[0:5])
+    print("failed to quadgram {} lines".format(len(fails)))
     return quad_dict
 
+def set_db_quadgrams(qd, amount=None):
+    print('inserting keys ({})'.format(amount))
+    table = db['quadgram'] # will create table
+    db.begin()
+    try:
+        for idx, key in enumerate(qd.keys()):
+            if idx % 10 == 0:
+                print('set {} values in db'.format(idx))
+            if amount and amount <= idx:
+                break
+            for q in qd[key]:
+                table.insert({'one': key,
+                              'two':q[1],
+                              'three':q[2],
+                              'four':q[3]})
+        print('commited')
+        db.commit()
+    except:
+        print("rolling back qd insertion")
+        db.rollback()
+
+def get_db_quadgrams(amount=None):
+    table = db['quadgram']
+    qd = defaultdict(list)
+    if amount:
+        quads = db.query('''SELECT root, one, two, three
+                            FROM quadgram ORDER BY id
+                             LIMIT {}'''.format(amount))
+    else:
+        quads = table.all()
+
+    for quad in quads:
+        qd[quad['one']].append([quad['one'], quad['two'], quad['three'], quad['four']])
+    return qd
+
 if __name__ == '__main__':
-    lines = get_lines_from_play()
-    # import ipdb; ipdb.set_trace();
-    qd = get_word_quadgram_from_lines(lines)
-    print(len(qd.keys()))
-    # if input('populate lines table (y/n)?: ') == 'y':
-    #     insert_shakespeare_lines()
+    # lines = get_lines_from_play(amount=1000)
+    # qd = get_word_quadgram_from_lines(lines)
+    # print('generated quads: {}'.format(len(qd.keys())))
+    #
+    # set_db_quadgrams(qd)
+
+    qd2 = get_db_quadgrams()
+    print('fetched quads: {}'.format(len(qd2.keys())))
+    print(qd2['old'])
+    # for idx, i in enumerate(qd2.keys()):
+    #     print(i)
+    #     if idx > 50:
+    #         break
     pass
 
 

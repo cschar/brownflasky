@@ -3,25 +3,37 @@
 {% block content %}
 
   <h3>Shakespeare play quadgram suggestions</h3>
-  words available: {{  words_available }}
-
-  <ul>
-      {% for word in best_words %}
-      <li> {{  word }}</li>
-      {% endfor %}
-  </ul>
-
 
   <div>
   <textarea id="shake" rows="4" cols="90"></textarea>
-  <div style="background:#cec">Press 0 to insert:
-    <span id="suggestion-0">nil</span></div>
-  <div style="background:#beb">Press 1 to insert:
-    <span id="suggestion-1">nil</span></div>
+
+    <div class="sg-helper-container">
+
+      <div class="sg-header">---</div>
+      <div class="sg-current-options">
+        <div style="background:#cec">Press 1 to insert:
+          <span id="suggestion-1">nil</span>
+        </div>
+        <div style="background:#beb">Press 2 to insert:
+          <span id="suggestion-2">nil</span>
+        </div>
+        <div style="background:#aea">Press 3 to insert:
+          <span id="suggestion-3">nil</span>
+        </div>
+      </div>
+    <div class="sg-all-options">
+
+      words available: {{  words_available }}
+
+      <ul>
+          {% for word in best_words %}
+          <li> {{  word }}</li>
+          {% endfor %}
+      </ul>
+    </div>
+
   </div>
-  <div style="background:#aea">Press 2 to insert:
-    <span id="suggestion-2">nil</span></div>
-  </div>
+
 
   <script>
 
