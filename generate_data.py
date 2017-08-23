@@ -38,13 +38,14 @@ def insert_brown_phrases():
             continue
         sentence.append(w)
 
+
 def insert_shakespeare_lines():
     table = db[table_name] # will create table
     from nltk.corpus import shakespeare
     plays = [ shakespeare.xml(i) for i in shakespeare.fileids()]
     start_time = time.time()
     print(start_time)
-    for p in plays[0:1]:
+    for p in plays[0:2]:
         lines = p.findall('*/*/*/LINE')
         for line in lines:
             line = line.text
@@ -64,7 +65,7 @@ def get_lines_from_play():
     start_time = time.time()
     print(start_time)
     all_lines = []
-    for p in plays[0:1]:
+    for p in plays[0:2]:
         lines = p.findall('*/*/*/LINE')
         for l in lines:
             all_lines.append(l.text)

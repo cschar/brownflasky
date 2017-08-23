@@ -35,15 +35,9 @@ a {
 
 /* Various other styles end */
 
-.discussion-container{
-    display: grid;
-    grid-template-areas: "right-d right-d-ico"
-
-                         "left-d-ico left-d ";
-
-}
 
 .discussion-container2 {
+  opacity:1;
   display: grid;
   grid-template-rows: 100px 100px;
   grid-template-columns: 150px 150px 150px;
@@ -84,4 +78,10 @@ a {
   /*width: 100px;*/
   /*height: 100px;*/
   background-color: #A5D6E9;
+}
+
+.brown-container{
+  /*background: url("/static/img/hell_of_flaming_rooster2.png");*/
+  /*background-size: cover;*/
+
 }

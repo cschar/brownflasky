@@ -2,15 +2,9 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 
-<div class="page-header">
-  <h1>Brown flasky</h1>
-</div>
+  <div class='brown-container'>
 <p class="lead"> brown phrases  <span> <img src="/static/ico/favicon-animated-kraken.ico"> </span></p>
 
-{#      {% for cat in categories %}#}
-{##}
-{#    <li> <a href="{{ url_for('word_category', category=cat) }}">{{ cat }}</a> </li>#}
-{#    {% endfor %}#}
 
   {% for p in phrases %}
     <div class="discussion-container2">
@@ -29,7 +23,5 @@
     <br/>
   {% endfor %}
 
-  <div>
-  {{  words }}
   </div>
 {% endblock %}

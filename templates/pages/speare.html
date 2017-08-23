@@ -2,11 +2,8 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 
-
-<div class="page-header">
-  <h1>Shakespeare play quadgram suggestions</h1>
-</div>
-  words : {{  words_available }}
+  <h3>Shakespeare play quadgram suggestions</h3>
+  words available: {{  words_available }}
 
   <ul>
       {% for word in best_words %}
@@ -17,8 +14,13 @@
 
   <div>
   <textarea id="shake" rows="4" cols="90"></textarea>
-  <div style="background:#cec">Press 0 to insert: <div id="zero-sug">nil</div></div>
-  <div style="background:#aea">Press 1 to insert: <div id="one-sug">nil</div></div>
+  <div style="background:#cec">Press 0 to insert:
+    <span id="suggestion-0">nil</span></div>
+  <div style="background:#beb">Press 1 to insert:
+    <span id="suggestion-1">nil</span></div>
+  </div>
+  <div style="background:#aea">Press 2 to insert:
+    <span id="suggestion-2">nil</span></div>
   </div>
 
   <script>
