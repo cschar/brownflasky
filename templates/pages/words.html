@@ -5,15 +5,29 @@
 <div class="page-header">
   <h1>Brown flasky</h1>
 </div>
-<p class="lead"> brown categories  <span> <img src="/static/ico/favicon-animated-kraken.ico"> </span></p>
-  <ul>
-      {% for cat in categories %}
+<p class="lead"> brown phrases  <span> <img src="/static/ico/favicon-animated-kraken.ico"> </span></p>
 
-    <li> <a href="{{ url_for('word_category', category=cat) }}">{{ cat }}</a> </li>
-    {% endfor %}
-  </ul>
+{#      {% for cat in categories %}#}
+{##}
+{#    <li> <a href="{{ url_for('word_category', category=cat) }}">{{ cat }}</a> </li>#}
+{#    {% endfor %}#}
 
-  </div>
+  {% for p in phrases %}
+    <div class="discussion-container2">
+
+      <div class="right-d"> {{  p.0 }} </div>
+      <div class="right-d-ico">
+
+          <img width=100 height=100 src="/static/img/celtic_drag1.png">
+      </div>
+
+      <div class="left-d-ico"><img width=100 height=100 src="/static/img/celtic_drag2.png"></div>
+      <div class="left-d"> {{  p.1 }} </div>
+
+    </div>
+
+    <br/>
+  {% endfor %}
 
   <div>
   {{  words }}

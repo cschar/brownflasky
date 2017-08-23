@@ -2,15 +2,26 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 
+
 <div class="page-header">
-  <h1>Shakespeare plays</h1>
+  <h1>Shakespeare play quadgram suggestions</h1>
 </div>
+  words : {{  words_available }}
+
   <ul>
-      {% for play in plays %}
-      <li> <a href="{{ url_for('speare_play', play_id=play.id) }}">{{ play.name }}</a> </li>
+      {% for word in best_words %}
+      <li> {{  word }}</li>
       {% endfor %}
   </ul>
 
+
+  <div>
+  <textarea id="shake" rows="4" cols="90"></textarea>
+  <div style="background:#cec">Press 0 to insert: <div id="zero-sug">nil</div></div>
+  <div style="background:#aea">Press 1 to insert: <div id="one-sug">nil</div></div>
   </div>
 
+  <script>
+
+  </script>
 {% endblock %}
