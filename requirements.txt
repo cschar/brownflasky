@@ -1,8 +1,4 @@
-
-Flask-SQLAlchemy
-Flask-WTF
-WTForms
-
+flask
 dataset
 
 
