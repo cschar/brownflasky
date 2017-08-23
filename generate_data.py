@@ -20,27 +20,43 @@ db = dataset.connect(DATABASE_URI)
 
 
 
-def insert_brown_phrases():
+def insert_brown_phrases(categories=None, cutoff=10000):
     from nltk.corpus import brown
+    if not categories:
+        categories=brown.categories()
 
     start_time = time.time()
     brown_table = db['brown']
-    words = brown.words(categories=brown.categories())
-
+    words = brown.words(categories=categories)
+    print("importing brown words from categories {},"
+          " w maximum word count of {}".format(categories, cutoff))
     # words have ',' separating each phrase
     import string
-    sentence = []
-    for idx, w in enumerate(words[2000:10000]):
-        if idx % 1000 == 0:
-            print('processed {} words'.format(idx))
-        if w[0] not in string.ascii_letters:
-            sentence = ' '.join(sentence)
-            brown_table.insert({'chunk': sentence})
-            # print('skipped {}'.format(w))
-            # print('dumped sentence {}'.format(sentence))
-            sentence = []
-            continue
-        sentence.append(w)
+
+    cutoff = min(len(words), cutoff)
+    insertions = 0
+    db.begin()
+    try:
+
+        sentence = []
+        for idx, w in enumerate(words[:cutoff]):
+            if idx % 1000 == 0:
+                print('processed {} words'.format(idx))
+            if w[0] not in string.ascii_letters:
+                sentence = ' '.join(sentence)
+                brown_table.insert({'chunk': sentence})
+                # print('skipped {}'.format(w))
+                # print('dumped sentence {}'.format(sentence))
+                sentence = []
+                insertions += 1
+                continue
+            sentence.append(w)
+        db.commit()
+    except:
+        db.rollback()
+        print("error inserting data")
+    end_time = time.time() - start_time
+    print("Done, w {} phrase insertions, took {}s".format(insertions, end_time))
 
 
 def insert_shakespeare_lines():
@@ -134,13 +150,23 @@ def get_db_quadgrams(amount=None):
 
 
 if __name__ == '__main__':
+
     if sys.argv[1] == 'setup':
         nltk.download('shakespeare')
         nltk.download('brown')
         nltk.download('punkt')
 
     if sys.argv[1] == 'gen-brown':
-        insert_brown_phrases()
+        # ['adventure', 'belles_lettres', 'editorial', 'fiction',
+        #  'government', 'hobbies', 'humor', 'learned', 'lore',
+        #  'mystery', 'news', 'religion', 'reviews', 'romance',
+        #  'science_fiction']
+
+        cutoff = int(sys.argv[2]) if len(sys.argv) == 3 else 10000
+        insert_brown_phrases(categories=['adventure', 'lore',
+                                         'belles_lettres',
+                                         'romance','science_fiction'],
+                             cutoff=cutoff)
 
     if sys.argv[1] == 'gen-speare':
         lines = get_lines_from_play(amount=1000)
@@ -152,7 +178,7 @@ if __name__ == '__main__':
     if sys.argv[1] == 'stat':
         qd2 = get_db_quadgrams()
         print('fetched quads: {}'.format(len(qd2.keys())))
-    pass
+
 
 
 

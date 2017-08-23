@@ -38,13 +38,15 @@ def home():
     return render_template('pages/placeholder.home.html')
 
 
+max_phrases = db.query('''SELECT COUNT(chunk) c FROM brown ORDER BY id''')
+max_phrases = max_phrases.next()['c']
 
 @app.route('/words')
 def words():
 
     phrases = []
-    i = random.randint(1,500)
-    i2 = random.randint(i,i+200)
+    i = random.randint(1, max_phrases - 300)
+    i2 = random.randint(i,i+300)
     result = db.query('''SELECT chunk FROM brown
                       WHERE id > {} AND id < {}
                       '''.format(i,i2))
@@ -52,12 +54,14 @@ def words():
     for row in result:
         if row['chunk'] == '':
             continue
-        row2 = next(result, None)
-        if row2:
-            phrases.append([row['chunk'], row2['chunk']])
+        for i in range(random.randint(1,4)):
+            row2 = next(result, None)
+
+            if row2 and row2 != '':
+                phrases.append([row['chunk'], row2['chunk']])
 
 
-    return render_template('pages/words.html',
+    return render_template('pages/brown_words.html',
                             phrases=phrases)
 
 
