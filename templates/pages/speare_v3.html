@@ -1,0 +1,48 @@
+
+
+{% extends 'layouts/main_v3.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<div class='site'>
+  <div class='page-title'>
+    <textarea id="shake" rows="7">
+    </textarea>
+  </div>
+   <div class='masthead'>
+     Start typing.. Try using those words.
+     <div class="side-1">Press 1 to insert: <span id="suggestion-1"></span></div>
+      <div class="side-2">Press 2 to insert: <span id="suggestion-2"></span></div>
+      <div class="side-3">Press 3 to insert: <span id="suggestion-3"></span></div>
+
+    </div>
+    <div class="main-content">
+        words available: {{  words_available }}
+    </div>
+  <div class="sidebar">
+{#      <div style="background:#cec">Press 1 to insert:#}
+{#          <span id="suggestion-1">nil</span>#}
+{#        </div>#}
+{#        <div style="background:#beb">Press 2 to insert:#}
+{#          <span id="suggestion-2">nil</span>#}
+{#        </div>#}
+{#        <div style="background:#aea">Press 3 to insert:#}
+{#          <span id="suggestion-3">nil</span>#}
+{#        </div>#}
+{#    #}
+{#      <div class="side-1"><span id="suggestion-1">nil</span></div>#}
+{#      <div class="side-2"><span id="suggestion-2">nil</span></div>#}
+{#      <div class="side-3"><span id="suggestion-3">nil</span></div>#}
+{#      <div class="side-4">4</div>#}
+
+  </div>
+    <div class="colophon">
+        <h1> Location:</h1>
+        <p>Field of 1cm wide weeds</p>
+        <p>17 montana way</p>
+        <p> G8X 2K9</p>
+    </div>
+
+</div>
+
+{% endblock %}

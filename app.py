@@ -78,7 +78,7 @@ import generate_data as gd
 qd = gd.get_db_quadgrams()
 
 @app.route('/speare/api/<word>')
-def speare_word_api(word):
+def speare_word_api_word(word):
     word = word.lower()
     try:
         phrases = qd[word]
@@ -101,6 +101,20 @@ def speare():
     return render_template('pages/speare.html',
                             best_words=best_words,
                             words_available=words_available)
+
+
+@app.route('/speare/api/available')
+def speare_word_api_available(word):
+    return jsonify({'available': words_available})
+
+@app.route('/speare-v2')
+def speare_v2():
+    return render_template('pages/speare_v2.html')
+
+@app.route('/speare-v3')
+def speare_v3():
+    return render_template('pages/speare_v3.html',
+                           words_available=words_available)
 
 
 @app.route('/about')
