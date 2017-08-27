@@ -56,6 +56,7 @@
             <li {% if request.endpoint == 'words' %} class="active" {% endif %}><a href="{{ url_for('words') }}">brown</a></li>
             <li {% if request.endpoint == 'speare' %} class="active" {% endif %}><a href="{{ url_for('speare') }}">speare</a></li>
             <li {% if request.endpoint == 'speare-v3' %} class="active" {% endif %}><a href="{{ url_for('speare_v3') }}">speare v3</a></li>
+          <li {% if request.endpoint == 'speare-v2' %} class="active" {% endif %}><a href="{{ url_for('speare_v2') }}">speare v2</a></li>
 {#            <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li>#}
 {#            <li class="dropdown">#}
 {#              <a class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>#}

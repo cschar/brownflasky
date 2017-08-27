@@ -104,8 +104,8 @@ def speare():
 
 
 @app.route('/speare/api/available')
-def speare_word_api_available(word):
-    return jsonify({'available': words_available})
+def speare_word_api_available():
+    return jsonify({'data': words_available})
 
 @app.route('/speare-v2')
 def speare_v2():

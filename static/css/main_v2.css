@@ -1,0 +1,228 @@
+
+    /*--------------------------------------------------------------
+    CSS Reset
+    --------------------------------------------------------------*/
+    html {
+        font-family: sans-serif;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust:     100%;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    img {
+        /*display: block;*/
+        border: 0;
+        width: 100%;
+        height: auto;
+    }
+
+
+    /*--------------------------------------------------------------
+    Accessibility
+    --------------------------------------------------------------*/
+    /* Text meant only for screen readers */
+    .screen-reader-text {
+        clip: rect(1px, 1px, 1px, 1px);
+        position: absolute !important;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+    }
+
+    .screen-reader-text:hover,
+    .screen-reader-text:active,
+    .screen-reader-text:focus {
+        background-color: #f1f1f1;
+        border-radius: 3px;
+        box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+        clip: auto !important;
+        color: #21759b;
+        display: block;
+        font-size: 14px;
+        font-weight: bold;
+        height: auto;
+        left: 5px;
+        line-height: normal;
+        padding: 15px 23px 14px;
+        text-decoration: none;
+        top: 5px;
+        width: auto;
+        z-index: 100000; /* Above WP toolbar */
+    }
+
+
+    /*--------------------------------------------------------------
+    Typography
+    --------------------------------------------------------------*/
+    body,
+    button,
+    input,
+    select,
+    textarea {
+        color: #404040;
+        font-family: 'Helvetica', Arial, sans-serif;
+        font-size: 18px;
+        line-height: 1.5;
+    }
+
+    h1,
+    h2,
+    h3 {
+        margin: 0;
+        padding: 1em 0;
+    }
+
+    p {
+        margin: 0;
+        padding: 1em 0;
+    }
+
+
+    /* use mobile-first layout as fallback for all browsers */
+    .site {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 145px 3fr;
+        grid-template-areas:
+                "title title"
+                "header header"
+                "optionbar optionbar"
+                "main main"
+                "footer footer";
+        background:#eaeaea;
+        /*min-height:400px*/
+    }
+
+#shake{
+    width:100%;
+}
+.header {
+    margin-left: 10px;
+	grid-area:header;
+    text-align: left;
+
+    /*background: #fda;*/
+}
+
+.page-title{
+	grid-area: title;
+    background: goldenrod;
+    /*height:60px;*/
+}
+
+.main-content{
+	grid-area: main;
+    background-color: lightgray;
+    /*height:600px;*/
+
+}
+
+.footer{
+    grid-area: footer;
+    background: #faf2cc;
+    min-height: 100px;
+}
+
+
+.optionbar{
+    grid-area: optionbar;
+    /*background: darkseagreen;*/
+    text-align: left;
+
+
+}
+    .side-1{
+        background-color:#F5DEB3; /*wheat*/
+        margin:10px;
+        padding:20px;
+    }
+    .side-2{
+        background-color:#E5DEB3;
+        margin:10px;
+        padding:20px;
+    }
+    .side-3{
+        background-color:#C5DEB3;
+        margin:10px;
+        padding:20px;
+    }
+    .side-4{
+        background-color:rosybrown;
+        margin:10px;
+        padding:20px;
+    }
+
+    .inputbox{
+        width:90%;
+    }
+
+
+a{
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 10px;
+    padding:5px;
+    background: #faf2cc;
+}
+
+a:hover{
+    background: #C5DEB3;
+}
+
+#drag1 {
+        width: auto;
+        height: 100px;
+    }
+
+@supports (display: grid) {
+
+
+
+        /*@media screen and (min-width: 540px) {*/
+
+        /*.site {*/
+            /*display: grid;*/
+            /*grid-template-columns: 1fr 1fr;*/
+            /*grid-template-rows: auto 1fr 3fr;*/
+            /*grid-template-areas:*/
+                    /*"title title"*/
+                    /*"main optionbar"*/
+                    /*"main optionbar"*/
+                    /*"footer footer";*/
+        /*}*/
+
+        /*.header {*/
+            /*grid-area: header;*/
+        /*}*/
+
+        /*.page-title {*/
+            /*grid-area: title;*/
+        /*}*/
+
+        /*.main-content {*/
+            /*grid-area: main;*/
+        /*}*/
+
+        /*.optionbar {*/
+            /*grid-area: optionbar;*/
+        /*}*/
+
+        /*.footer {*/
+            /*grid-area: footer;*/
+        /*}*/
+
+    /*}*/
+
+    /*@media screen and (min-width: 700px) {*/
+        /*.site {*/
+            /*grid-template-columns: 2fr 1fr 1fr;*/
+            /*grid-template-areas:*/
+                    /*"title title title"*/
+                    /*"main header header"*/
+                    /*"main optionbar footer";*/
+        /*}*/
+    /*}*/
+}
