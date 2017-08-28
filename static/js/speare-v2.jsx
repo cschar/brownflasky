@@ -8,24 +8,26 @@ var state2 = {
   title: 'a',
   phrases: [],
   last: 'nay',
+  possibles: []
 }
 
 var set_check_text_input_value = function(v){
-  console.log(v)
   let char = v[v.length -1]
   //
-  if (char == '1' || char == '2' || char == '3'){
-    //knock off that number
+  if (char == '1' || char == '2'
+      || char == '3' || char=='`'){
+    //knock off that number / reshuffle
     v = v.slice(0, v.length-1)
   }
   state2.value = v;
+  //newline still in there after trim, messes up sometimes
   let words = v.trim().split(' ')
   let last = words[words.length -1]
+  state2.possibles = filterWords(last).join(', ')
   state2.last = last;
 }
 
 var get_suggestions = function(word){
-  console.log('suggestions now: ' + state2.phrases.length)
   m.request({
         method: "GET",
         url: "/speare/api/"+word,
@@ -42,8 +44,13 @@ var keyp = function(){
 function withKey(callback) {
   return function(e) {
     var ch = String.fromCharCode(e.keyCode)
+
     if (ch == ' ') {
       get_suggestions(state2.last)
+    }
+    if (ch == '0'){
+      state2.phrases = _.shuffle(state2.phrases)
+      m.redraw()
     }
     if (ch == '1'){
       state2.value = state2.value + state2.phrases[0].slice(1,4).join(' ') + ' '
@@ -58,9 +65,23 @@ function withKey(callback) {
       state2.value = state2.value + state2.phrases[2].slice(1,4).join(' ') + ' '
       get_suggestions(state2.phrases[2][3])
     }
+
   }
 }
 
+var filterWords = function(word){
+  word = word.toLowerCase()
+  let filtered = words_available.filter(function(each){
+    for(let i = 0;
+        i < word.length && i < each.length && i < 3; i++){
+      if(word[i] != each[i]){
+        return false
+      }
+    }
+    return true
+  })
+  return filtered
+}
 
 
 var getPhrase = function(index){
@@ -80,6 +101,7 @@ var getPhrase = function(index){
 //    m("div", {class: "side-3"}, getPhrase(2)),
 //    ]
 //)
+let msg = '      '
 
 var Hello = {
   view: function () {
@@ -100,13 +122,18 @@ var Hello = {
         state2.value)]),
       m("div", {class: "optionbar"},
           [
-        "start typing, try using those words",
+        "start typing, try using those words [ Press '0' for reshuffle ]",
     m("div", {class: "side-1" }, "Press 1 to insert: "+ getPhrase(0)),
     m("div", {class: "side-2" }, "Press 2 to insert: "+ getPhrase(1)),
-    m("div", {class: "side-3" }, "Press 3 to insert: "+ getPhrase(2)),
+    m("div", {class: "side-3" }, "Press 3 to insert: "+ getPhrase(2))
+
     ]),
+        m("div", {class: "listbar"},
+            [ 'suggester: ',
+                m('div', state2.possibles)
+        ]),
       m("div", {class: "main-content"},
-          'suggestions available: ' + words_available),
+          'suggestions available: ' + words_available.join(', ')),
 
       m("div", {class: "footer"}, [
 
@@ -136,7 +163,7 @@ m.request({
     })
     .then((response) => {
       console.log(response);
-      words_available = response.data.join(', ');
+      words_available = response.data;
       // m.mount(, Hello);
       m.route(root, "/hello", {
         "/splash": Splash,
