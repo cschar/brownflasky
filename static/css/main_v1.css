@@ -93,7 +93,6 @@
                 "sidebar sidebar"
                 "footer footer";
         background:#eaeaea;
-        min-height:400px
     }
 
 #shake{
@@ -116,7 +115,6 @@
 .main-content{
 	grid-area: main;
     background-color: lightgray;
-    height:600px;
 }
 
 .colophon{

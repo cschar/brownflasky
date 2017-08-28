@@ -102,6 +102,10 @@ def speare():
                             best_words=best_words,
                             words_available=words_available)
 
+@app.route('/speare-v1')
+def speare_v1():
+    return render_template('pages/speare_v1.html',
+                           words_available=words_available)
 
 @app.route('/speare/api/available')
 def speare_word_api_available():
@@ -110,11 +114,6 @@ def speare_word_api_available():
 @app.route('/speare-v2')
 def speare_v2():
     return render_template('pages/speare_v2.html')
-
-@app.route('/speare-v3')
-def speare_v3():
-    return render_template('pages/speare_v3.html',
-                           words_available=words_available)
 
 
 @app.route('/about')

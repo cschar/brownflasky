@@ -111,7 +111,7 @@ var Hello = {
                 m("a", {href: "/"}, "home"),
                 m("a", {href: "/words"}, "brown"),
               m("a", {href: "/speare"}, "speare"),
-              m("a", {href: "/speare-v2"}, "speare-v2"),
+              m("a", {href: "/speare-v1"}, "speare-v1"),
                 m("a", {href: "#!/splash"}, "splash"),
 
           ]),
