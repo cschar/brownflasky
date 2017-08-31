@@ -15,7 +15,7 @@ var set_check_text_input_value = function(v){
   let char = v[v.length -1]
   //
   if (char == '1' || char == '2'
-      || char == '3' || char=='`'){
+      || char == '3' || char=='0'){
     //knock off that number / reshuffle
     v = v.slice(0, v.length-1)
   }
